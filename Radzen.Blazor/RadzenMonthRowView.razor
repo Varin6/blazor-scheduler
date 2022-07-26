@@ -1,0 +1,36 @@
+@using Radzen.Blazor
+@using Radzen.Blazor.Rendering
+
+@inherits KLOCSchedulerViewBase
+
+@code {    
+    public override RenderFragment Render()
+    {
+        
+        var schedulerData = Scheduler.GetAllAccountData(StartDate, EndDate);
+        // var schedulerDataList = schedulerData.ToList();
+        var schedulerDataArray = schedulerData as KLOCSchedulerData[] ?? schedulerData.ToArray();
+        
+        var appointments = Scheduler.GetAppointmentsInRange(StartDate, EndDate);
+        
+        var appointmentDatas = appointments as AppointmentData[] ?? appointments.ToArray();
+        var numberOfRows = schedulerDataArray.Count();
+        
+
+        var maxAppointmentsInSlot = 0;
+
+        if (MaxAppointmentsInSlot != null)
+        {
+            maxAppointmentsInSlot = MaxAppointmentsInSlot.Value;
+        }
+        else
+        {
+            var slotHeight = (Scheduler.Height - 60) / 6;
+            maxAppointmentsInSlot = Convert.ToInt32(Math.Floor(slotHeight / 24)) - 1;
+        }
+
+        return @<CascadingValue Value=@Scheduler>
+            <MonthRowView NumberOfRows="@numberOfRows" StartDate=@StartDate EndDate=@EndDate MaxAppointmentsInSlot=@maxAppointmentsInSlot MoreText=@MoreText Appointments=@appointmentDatas AccountAppointments=@schedulerDataArray />
+        </CascadingValue>;
+    }
+}

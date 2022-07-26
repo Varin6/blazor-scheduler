@@ -130,6 +130,19 @@ $scheduler-border-radius: $border-radius !default;
   }
 }
 
+.rz-month-row-view {
+  .rz-view-content {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    .kloc-account-row {
+      display: flex;
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+  }
+}
+
 .rz-slot-title {
   text-align: right;
   padding: $scheduler-slot-title-padding;
